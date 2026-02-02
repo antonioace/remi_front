@@ -3,7 +3,7 @@ import axios, {
   type AxiosResponse,
   isAxiosError,
 } from "axios";
-import { PUBLIC_API_BASE_URL } from "$env/static/public";
+import { env } from "$env/dynamic/public";
 import type { HttpResult } from "./types";
 
 export abstract class HttpClient {
@@ -11,7 +11,7 @@ export abstract class HttpClient {
 
   constructor(endpoint: string) {
     this.instance = axios.create({
-      baseURL: `${PUBLIC_API_BASE_URL}/${endpoint}`,
+      baseURL: `${env.PUBLIC_API_BASE_URL}/${endpoint}`,
       headers: {
         "Content-Type": "application/json",
       },
