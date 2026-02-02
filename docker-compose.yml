@@ -1,0 +1,20 @@
+services:
+  front:
+    build: .
+    ports:
+      - '127.0.0.1:3000:3000'
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - web
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.remido-front.rule=Host(`remido.hecainnova.com`)'
+      - 'traefik.http.routers.remido-front.entrypoints=websecure'
+      - 'traefik.http.routers.remido-front.tls.certresolver=myresolver'
+      - 'traefik.http.services.remido-front.loadbalancer.server.port=3000'
+
+networks:
+  web:
+    external: true

@@ -1,0 +1,5 @@
+{
+  "name": "remido-front",
+  "compatibility_date": "2026-02-02",
+  "main": "src/index.ts" 
+}
