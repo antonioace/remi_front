@@ -10,6 +10,7 @@
   } from "../types";
   import { authState } from "$lib/stores/auth.svelte";
   import { Plus, Trash2 } from "@lucide/svelte";
+  import dayjs from "dayjs";
 
   let { notebook, onSubmit, onCancel } = $props<{
     notebook?: Notebook;
@@ -32,7 +33,7 @@
       formData.description = notebook.description || "";
       formData.textContent = notebook.textContent;
       formData.assignedAt = notebook.assignedAt
-        ? notebook.assignedAt.slice(0, 10)
+        ? dayjs(notebook.assignedAt).format("YYYY-MM-DDTHH:mm")
         : "";
       formData.timezone =
         notebook.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -65,6 +66,9 @@
     const { tasks, ...rest } = formData;
     const payload = {
       ...rest,
+      assignedAt: rest.assignedAt
+        ? dayjs(rest.assignedAt).toISOString()
+        : undefined,
       userId: authState.user?.userId,
       content: { tasks },
     };
@@ -110,7 +114,7 @@
 
     <div class="space-y-2">
       <Label for="assignedAt">Fecha de asignación (Opcional)</Label>
-      <Input id="assignedAt" type="date" bind:value={formData.assignedAt} />
+      <Input id="assignedAt" type="datetime-local" bind:value={formData.assignedAt} />
     </div>
   </div>
 

@@ -164,7 +164,7 @@
 
   <!-- Sheet for Create/Edit -->
   <Sheet.Root bind:open={isSheetOpen}>
-    <Sheet.Content side="right" class="sm:max-w-[600px] p-0 flex flex-col">
+    <Sheet.Content side="right" class="w-full  sm:max-w-[600px] p-0 flex flex-col">
       <Sheet.Header class="px-6 pt-6 pb-2 border-b">
         <Sheet.Title
           >{selectedNotebook

@@ -10,6 +10,7 @@
   import relativeTime from "dayjs/plugin/relativeTime";
   import "dayjs/locale/es";
   import { toast } from "svelte-sonner";
+  import { useWindowSize } from "$lib/features/shared/hooks/useWindowSize";
 
   dayjs.extend(relativeTime);
   dayjs.locale("es");
@@ -20,6 +21,9 @@
   let isLoading = $state(false);
   let unreadCount = $derived(notifications.filter((n) => !n.readAt).length);
 
+  const width = useWindowSize();
+
+  let classWithWidth = $derived($width < 640 ? "w-full" : "w-[400px]");
   async function loadNotifications() {
     isLoading = true;
     const result = await notificationService.getAll({ limit: 10 });
@@ -71,7 +75,10 @@
           {/if}
         </Button>
       </Sheet.Trigger>
-      <Sheet.Content side="right" class="w-[400px] sm:w-[540px]">
+      <Sheet.Content
+        side="right"
+        class={classWithWidth + " p-4 flex flex-col flex-1"}
+      >
         <Sheet.Header>
           <Sheet.Title class="flex items-center gap-2">
             Notificaciones
@@ -87,7 +94,7 @@
           </Sheet.Description>
         </Sheet.Header>
 
-        <div class="mt-8 flex flex-col gap-4">
+        <div class="mt-8 flex flex-col gap-4 flex-1 overflow-auto">
           {#if isLoading}
             <div
               class="flex flex-col items-center justify-center py-12 text-muted-foreground"
@@ -103,7 +110,7 @@
               <p class="text-sm font-medium">No tienes notificaciones</p>
             </div>
           {:else}
-            <div class="divide-y border rounded-lg overflow-hidden">
+            <div class="divide-y border rounded-lg flex flex-col overflow-auto">
               {#each notifications as notification (notification.id)}
                 <div
                   class="p-4 flex flex-col gap-2 hover:bg-slate-50 transition-colors {!notification.readAt
