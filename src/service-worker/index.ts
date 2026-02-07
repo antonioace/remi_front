@@ -1,5 +1,5 @@
 /// <reference types="@sveltejs/kit" />
-
+console.log("SW Version: 1.0.1 - Con Push");
 import { build, files, version } from "$service-worker";
 
 // Create a unique cache name for this deployment
