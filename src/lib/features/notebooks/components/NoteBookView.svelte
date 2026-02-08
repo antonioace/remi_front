@@ -107,10 +107,12 @@
 
 <div class="space-y-6">
   <div class="flex items-center justify-between">
-    <h2 class="text-2xl font-semibold tracking-tight">Tus Notebooks</h2>
-    <Button onclick={openCreate} class="flex items-center gap-2">
+    <h2 class="text-2xl font-semibold tracking-tight text-[#5c5b63]">Tus Notebooks</h2>
+    <Button
+      onclick={openCreate}
+      class="flex items-center gap-2 bg-[#a151fc] hover:bg-[#8e44e3] text-white"
+    >
       <Plus class="h-4 w-4" />
-      Nuevo Notebook
     </Button>
   </div>
 
@@ -164,7 +166,10 @@
 
   <!-- Sheet for Create/Edit -->
   <Sheet.Root bind:open={isSheetOpen}>
-    <Sheet.Content side="right" class="w-full  sm:max-w-[600px] p-0 flex flex-col">
+    <Sheet.Content
+      side="right"
+      class="w-full  sm:max-w-[600px] p-0 flex flex-col"
+    >
       <Sheet.Header class="px-6 pt-6 pb-2 border-b">
         <Sheet.Title
           >{selectedNotebook

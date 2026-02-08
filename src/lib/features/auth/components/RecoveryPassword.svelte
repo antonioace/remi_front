@@ -68,7 +68,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <div class="mx-auto h-20 w-20">
-      <Icono width="100%" height="100%" fill="#4f46e5" />
+      <Icono width="100%" height="100%" fill="#a151fc" />
     </div>
 
     {#if step === 1}
@@ -110,7 +110,7 @@
               bind:value={payload.email}
               autocomplete="email"
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 h-[40px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a151fc] sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -119,7 +119,7 @@
           <button
             type="submit"
             disabled={isLoading}
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="flex w-full justify-center rounded-md bg-[#a151fc] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#8e44e3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a151fc] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Enviando..." : "Enviar código de recuperación"}
           </button>
@@ -140,7 +140,7 @@
               type="text"
               bind:value={resetData.token}
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 h-[40px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a151fc] sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -158,7 +158,7 @@
               type="password"
               bind:value={resetData.newPassword}
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 h-[40px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a151fc] sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -176,7 +176,7 @@
               type="password"
               bind:value={resetData.confirmPassword}
               required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full rounded-md border-0 py-1.5 h-[40px] text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a151fc] sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -185,7 +185,7 @@
           <button
             type="submit"
             disabled={isLoading}
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="flex w-full justify-center rounded-md bg-[#a151fc] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#8e44e3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a151fc] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Restableciendo..." : "Restablecer contraseña"}
           </button>
@@ -195,7 +195,7 @@
           <button
             type="button"
             onclick={() => (step = 1)}
-            class="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+            class="text-sm font-semibold text-[#a151fc] hover:text-[#8e44e3]"
           >
             Volver a solicitar código
           </button>
@@ -207,7 +207,7 @@
       ¿Recuerdas tu contraseña?
       <a
         href="/auth/login"
-        class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        class="font-semibold leading-6 text-[#a151fc] hover:text-[#8e44e3]"
         >Inicia sesión</a
       >
     </p>
