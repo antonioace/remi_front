@@ -6,9 +6,47 @@ import type {
 } from "$lib/features/shared/types";
 import type { Notebook, CreateNotebookDto, UpdateNotebookDto } from "../types";
 
+import { isAxiosError } from "axios";
+
 export class NotebookService extends HttpClient {
   constructor() {
     super("notebooks");
+  }
+
+  async createFromAudio(
+    file: File,
+    timezone: string,
+  ): Promise<HttpResult<Notebook>> {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("timezone", timezone);
+
+    try {
+      const response = await this.instance.post<Notebook>(
+        "create-audio",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      let errorMessage = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
   }
 
   async getAll(

@@ -10,7 +10,9 @@
     Eye,
     Flag,
     MoreHorizontal,
+    Mic,
   } from "@lucide/svelte";
+  import AudioManager from "../../audio/components/AudioManager.svelte";
   import dayjs from "dayjs";
   import "dayjs/locale/es";
 
@@ -21,7 +23,10 @@
     onView: (n: Notebook) => void;
   }>();
 
-  const hasTasks = notebook.content?.tasks && notebook.content.tasks.length > 0;
+  const hasTasks = $derived(
+    notebook.content?.tasks && notebook.content.tasks.length > 0,
+  );
+  let showAudio = $state(false);
 </script>
 
 <!-- Card Container -->
@@ -38,7 +43,9 @@
     </div>
 
     <div class="flex items-center gap-3">
-      <div class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+      <div
+        class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
+      >
         <Calendar class="h-3.5 w-3.5 text-slate-400" />
         <span>{dayjs(notebook.createdAt).format("DD MMM YYYY")}</span>
       </div>
@@ -57,6 +64,10 @@
           <DropdownMenu.Item onclick={() => onEdit(notebook)}>
             <Edit class="mr-2 h-4 w-4" />
             <span>Editar</span>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item onclick={() => (showAudio = true)}>
+            <Mic class="mr-2 h-4 w-4" />
+            <span>Audios</span>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
@@ -117,3 +128,5 @@
     </div>
   </div>
 </div>
+
+<AudioManager notebookId={notebook.id} bind:open={showAudio} />

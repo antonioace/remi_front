@@ -2,10 +2,10 @@
   import type { Notebook } from "../types";
   import { Calendar, ListTodo, FileText, Info } from "@lucide/svelte";
   import dayjs from "dayjs";
-
-  let { notebook } = $props<{
+  interface Props {
     notebook: Notebook;
-  }>();
+  }
+  let { notebook }: Props = $props();
 </script>
 
 <div class="space-y-6 py-4">

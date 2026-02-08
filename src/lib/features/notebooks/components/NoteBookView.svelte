@@ -9,16 +9,14 @@
   import NoteBookCard from "./NoteBookCard.svelte";
   import NoteBookForm from "./NoteBookForm.svelte";
   import NoteBookDetails from "./NoteBookDetails.svelte";
+  import CreateNotebookFromAudio from "./CreateNotebookFromAudio.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Sheet from "$lib/components/ui/sheet";
   import * as Dialog from "$lib/components/ui/dialog";
-  import { Plus, Loader2 } from "@lucide/svelte";
+  import { Plus, Loader2, Mic } from "@lucide/svelte";
   import { toast } from "svelte-sonner";
 
-  import type {
-    PaginationResult,
-    HttpResult,
-  } from "$lib/features/shared/types";
+  import type { PaginationResult } from "$lib/features/shared/types";
 
   let notebooks = $state<Notebook[]>([]);
   let meta = $state<PaginationResult<Notebook>["meta"] | undefined>(undefined);
@@ -29,6 +27,7 @@
   let isDetailsOpen = $state(false);
   let selectedNotebook = $state<Notebook | undefined>(undefined);
   let viewedNotebook = $state<Notebook | undefined>(undefined);
+  let isAudioCreateOpen = $state(false);
 
   async function loadNotebooks() {
     isLoading = true;
@@ -107,13 +106,25 @@
 
 <div class="space-y-6">
   <div class="flex items-center justify-between">
-    <h2 class="text-2xl font-semibold tracking-tight text-[#5c5b63]">Tus Notebooks</h2>
-    <Button
-      onclick={openCreate}
-      class="flex items-center gap-2 bg-[#a151fc] hover:bg-[#8e44e3] text-white"
-    >
-      <Plus class="h-4 w-4" />
-    </Button>
+    <h2 class="text-2xl font-semibold tracking-tight text-[#5c5b63]">
+      Tus Notebooks
+    </h2>
+    <div class="flex items-center gap-2">
+      <Button
+        onclick={() => (isAudioCreateOpen = true)}
+        variant="outline"
+        size="icon"
+        class="border-[#a151fc] text-[#a151fc] hover:bg-[#a151fc]/10"
+      >
+        <Mic class="h-4 w-4" />
+      </Button>
+      <Button
+        onclick={openCreate}
+        class="flex items-center gap-2 bg-[#a151fc] hover:bg-[#8e44e3] text-white"
+      >
+        <Plus class="h-4 w-4" />
+      </Button>
+    </div>
   </div>
 
   {#if isLoading}
@@ -215,4 +226,12 @@
       </Dialog.Footer>
     </Dialog.Content>
   </Dialog.Root>
+
+  <CreateNotebookFromAudio
+    bind:open={isAudioCreateOpen}
+    onSuccess={() => {
+      loadNotebooks();
+    }}
+  />
 </div>
+
