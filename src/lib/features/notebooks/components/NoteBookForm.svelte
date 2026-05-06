@@ -9,8 +9,8 @@
     UpdateNotebookDto,
   } from "../types";
   import { authState } from "$lib/stores/auth.svelte";
-  import { Plus, Trash2 } from "@lucide/svelte";
   import dayjs from "dayjs";
+  import { Trash2 } from "@lucide/svelte";
 
   let { notebook, onSubmit, onCancel } = $props<{
     notebook?: Notebook;
@@ -25,7 +25,10 @@
     assignedAt: "",
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     tasks: [] as NoteTask[],
+    tags: [] as string[],
   });
+
+  let newTag = $state("");
 
   $effect(() => {
     if (notebook) {
@@ -40,6 +43,9 @@
       formData.tasks = notebook.content?.tasks
         ? JSON.parse(JSON.stringify(notebook.content.tasks))
         : [];
+      formData.tags = notebook.content?.tags
+        ? JSON.parse(JSON.stringify(notebook.content.tags))
+        : [];
     } else {
       formData.name = "";
       formData.description = "";
@@ -47,30 +53,36 @@
       formData.assignedAt = "";
       formData.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       formData.tasks = [];
+      formData.tags = [];
+      newTag = "";
     }
   });
 
-  function addTask() {
-    formData.tasks = [
-      ...formData.tasks,
-      { id: crypto.randomUUID(), name: "", contentText: "" },
-    ];
+  function addTag(e: KeyboardEvent) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const tag = newTag.trim();
+      if (tag && !formData.tags.includes(tag)) {
+        formData.tags = [...formData.tags, tag];
+      }
+      newTag = "";
+    }
   }
 
-  function removeTask(index: number) {
-    formData.tasks = formData.tasks.filter((_, i) => i !== index);
+  function removeTag(index: number) {
+    formData.tags = formData.tags.filter((_, i) => i !== index);
   }
 
   function handleSubmit(e: Event) {
     e.preventDefault();
-    const { tasks, ...rest } = formData;
+    const { tasks, tags, ...rest } = formData;
     const payload = {
       ...rest,
       assignedAt: rest.assignedAt
         ? dayjs(rest.assignedAt).toISOString()
         : undefined,
       userId: authState.user?.userId,
-      content: { tasks },
+      content: { tasks, tags },
     };
     onSubmit(payload);
   }
@@ -78,11 +90,13 @@
 
 <form
   onsubmit={handleSubmit}
-  class="space-y-6 py-6 max-h-[85vh] overflow-y-auto px-6"
+  class="space-y-6 py-6 max-h-[85vh] overflow-y-auto"
 >
   <div class="space-y-4">
     <div class="space-y-2">
-      <Label for="name">Nombre del Notebook</Label>
+      <Label for="name"
+        >Nombre del Notebook <span class="text-red-500">*</span></Label
+      >
       <Input
         id="name"
         bind:value={formData.name}
@@ -101,7 +115,9 @@
     </div>
 
     <div class="space-y-2">
-      <Label for="textContent">Contenido Principal</Label>
+      <Label for="textContent"
+        >Contenido Principal <span class="text-red-500">*</span></Label
+      >
       <textarea
         id="textContent"
         bind:value={formData.textContent}
@@ -112,76 +128,56 @@
       ></textarea>
     </div>
 
-    <div class="space-y-2">
-      <Label for="assignedAt">Fecha de asignación (Opcional)</Label>
-      <Input id="assignedAt" type="datetime-local" bind:value={formData.assignedAt} />
-    </div>
-  </div>
-
-  <div class="border-t pt-6 space-y-4">
-    <div class="flex items-center justify-between">
-      <h3
-        class="text-sm font-semibold uppercase tracking-wider text-muted-foreground"
-      >
-        Notas Adicionales (Tasks)
-      </h3>
-      <Button
-        variant="outline"
-        size="sm"
-        type="button"
-        onclick={addTask}
-        class="h-8 gap-1"
-      >
-        <Plus class="h-3.5 w-3.5" />
-        Agregar Nota
-      </Button>
-    </div>
-
-    {#if formData.tasks.length === 0}
-      <p
-        class="text-xs text-center text-muted-foreground py-4 border border-dashed rounded-md"
-      >
-        No hay notas adicionales.
-      </p>
-    {:else}
-      <div class="space-y-4">
-        {#each formData.tasks as task, i (i)}
-          <div class="relative p-4 rounded-lg border bg-slate-50 space-y-3">
+    <!-- Tags Selector -->
+    <div class="space-y-3 pt-2">
+      <Label>Etiquetas</Label>
+      <div class="flex flex-wrap gap-2 mb-2">
+        {#each formData.tags as tag, i (tag)}
+          <span
+            class="inline-flex items-center gap-1 bg-[#a151fc]/10 text-[#a151fc] px-2.5 py-1 rounded-lg text-xs font-semibold"
+          >
+            {tag}
             <button
               type="button"
-              onclick={() => removeTask(i)}
-              class="absolute top-2 right-2 text-muted-foreground hover:text-red-500 transition-colors"
+              onclick={() => removeTag(i)}
+              class="hover:text-red-500 transition-colors ml-1 focus:outline-none"
             >
-              <Trash2 class="h-4 w-4" />
+              <Trash2 class="h-3 w-3" />
             </button>
-            <div class="space-y-2">
-              <Label class="text-xs">Título de la nota</Label>
-              <Input
-                bind:value={task.name}
-                placeholder="Título"
-                class="h-8 text-xs bg-white"
-              />
-            </div>
-            <div class="space-y-2">
-              <Label class="text-xs">Contenido</Label>
-              <textarea
-                bind:value={task.contentText}
-                placeholder="Contenido de la nota..."
-                rows={2}
-                class="flex min-h-[60px] w-full rounded-md border border-input bg-white px-3 py-2 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              ></textarea>
-            </div>
-          </div>
+          </span>
         {/each}
       </div>
-    {/if}
+      <Input
+        type="text"
+        placeholder="Escribe un tag y presiona Enter..."
+        bind:value={newTag}
+        onkeydown={addTag}
+        class="h-10 rounded-xl"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <Label for="assignedAt">Fecha de asignación</Label>
+      <Input
+        id="assignedAt"
+        type="datetime-local"
+        bind:value={formData.assignedAt}
+      />
+    </div>
   </div>
 
   <div
-    class="flex justify-end gap-2 pt-6 sticky bottom-0 bg-white border-t py-2"
+    class="border h-15 border-t flex items-center absolute bottom-0 left-0 flex w-full items-center"
   >
-    <Button variant="ghost" type="button" onclick={onCancel}>Cancelar</Button>
-    <Button type="submit"
+    <Button
+      variant="ghost"
+      onclick={onCancel}
+      class="text-[#000] px-6 h-full flex-[0.5] border border-r-4 border-slate-50 rounded-none"
+      >Cancelar</Button
+    >
+    <Button
+      type="submit"
+      class="text-[#a151fc] px-6 h-full flex-[0.5] rounded-none"
       >{notebook ? "Actualizar Notebook" : "Crear Notebook"}</Button
     >
   </div>

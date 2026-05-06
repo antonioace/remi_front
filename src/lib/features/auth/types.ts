@@ -36,12 +36,16 @@ export interface MessageResponse {
 
 export interface VerifyTokenResponse {
   valid: boolean;
+  user: User;
 }
 
 export interface User {
   userId: string;
   email: string;
   role: string;
-  id?: string; // Backend user object has id
-  isActive?: boolean; // Backend user object has isActive
+  id?: string;
+  isActive?: boolean;
+  name?: string;
+  username?: string;
+  profileImage?: string;
 }

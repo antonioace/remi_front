@@ -8,11 +8,9 @@
   } from "../types";
   import NoteBookCard from "./NoteBookCard.svelte";
   import NoteBookForm from "./NoteBookForm.svelte";
-  import NoteBookDetails from "./NoteBookDetails.svelte";
   import CreateNotebookFromAudio from "./CreateNotebookFromAudio.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Sheet from "$lib/components/ui/sheet";
-  import * as Dialog from "$lib/components/ui/dialog";
   import { Plus, Loader2, Mic } from "@lucide/svelte";
   import { toast } from "svelte-sonner";
 
@@ -24,9 +22,7 @@
   let limit = 20;
   let isLoading = $state(true);
   let isSheetOpen = $state(false);
-  let isDetailsOpen = $state(false);
   let selectedNotebook = $state<Notebook | undefined>(undefined);
-  let viewedNotebook = $state<Notebook | undefined>(undefined);
   let isAudioCreateOpen = $state(false);
 
   async function loadNotebooks() {
@@ -96,11 +92,6 @@
     isSheetOpen = true;
   }
 
-  function openView(notebook: Notebook) {
-    viewedNotebook = notebook;
-    isDetailsOpen = true;
-  }
-
   onMount(loadNotebooks);
 </script>
 
@@ -141,12 +132,7 @@
   {:else}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {#each notebooks as notebook (notebook.id)}
-        <NoteBookCard
-          {notebook}
-          onEdit={openEdit}
-          onDelete={handleDelete}
-          onView={openView}
-        />
+        <NoteBookCard {notebook} onEdit={openEdit} onDelete={handleDelete} />
       {/each}
     </div>
 
@@ -192,7 +178,7 @@
           notebook.
         </Sheet.Description>
       </Sheet.Header>
-      <div class="flex-1 overflow-y-hidden">
+      <div class="flex-1 overflow-y-hidden p-4">
         <NoteBookForm
           notebook={selectedNotebook}
           onSubmit={handleCreateOrUpdate}
@@ -205,28 +191,6 @@
     </Sheet.Content>
   </Sheet.Root>
 
-  <!-- Dialog for Details View -->
-  <Dialog.Root bind:open={isDetailsOpen}>
-    <Dialog.Content class="sm:max-w-[700px] max-h-[90vh] flex flex-col">
-      <Dialog.Header>
-        <Dialog.Title class="text-2xl">{viewedNotebook?.name}</Dialog.Title>
-        <Dialog.Description>
-          Detalles completos del notebook.
-        </Dialog.Description>
-      </Dialog.Header>
-      <div class="flex-1 overflow-y-auto pr-2">
-        {#if viewedNotebook}
-          <NoteBookDetails notebook={viewedNotebook} />
-        {/if}
-      </div>
-      <Dialog.Footer>
-        <Button variant="outline" onclick={() => (isDetailsOpen = false)}
-          >Cerrar</Button
-        >
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Root>
-
   <CreateNotebookFromAudio
     bind:open={isAudioCreateOpen}
     onSuccess={() => {
@@ -234,4 +198,3 @@
     }}
   />
 </div>
-

@@ -1,7 +1,14 @@
 export interface NoteTask {
   id: string;
-  name: string;
+  name?: string;
   contentText: string;
+}
+
+export interface NoteImage {
+  id: string;
+  url: string;
+  key?: string;
+  text: string;
 }
 
 export interface Notebook {
@@ -11,6 +18,8 @@ export interface Notebook {
   textContent: string;
   content?: {
     tasks?: NoteTask[];
+    tags?: string[];
+    images?: NoteImage[];
     [key: string]: unknown;
   };
   userId: string;

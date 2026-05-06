@@ -13,14 +13,14 @@
     Mic,
   } from "@lucide/svelte";
   import AudioManager from "../../audio/components/AudioManager.svelte";
+  import { goto } from "$app/navigation";
   import dayjs from "dayjs";
   import "dayjs/locale/es";
 
-  let { notebook, onEdit, onDelete, onView } = $props<{
+  let { notebook, onEdit, onDelete } = $props<{
     notebook: Notebook;
     onEdit: (n: Notebook) => void;
     onDelete: (id: string) => void;
-    onView: (n: Notebook) => void;
   }>();
 
   const hasTasks = $derived(
@@ -57,7 +57,8 @@
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
-          <DropdownMenu.Item onclick={() => onView(notebook)}>
+          <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+          <DropdownMenu.Item onclick={() => { goto(`/dashboard/notebooks/${notebook.id}`).catch(() => {}) }}>
             <Eye class="mr-2 h-4 w-4" />
             <span>Ver Detalles</span>
           </DropdownMenu.Item>
