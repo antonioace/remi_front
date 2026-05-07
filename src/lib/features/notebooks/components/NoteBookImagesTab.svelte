@@ -87,11 +87,11 @@
   import ImagePreview from "$lib/components/ImagePreview.svelte";
 </script>
 
-<div class="mb-6 flex items-center justify-between">
+<div class="mb-6 flex items-center justify-end w-full">
   <div class="relative">
     <Button
       variant="outline"
-      class="ml-auto gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5"
+      class="gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5"
       disabled={isUploadingImage}
     >
       {#if isUploadingImage}

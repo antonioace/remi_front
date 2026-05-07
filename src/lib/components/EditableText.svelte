@@ -86,7 +86,7 @@
       <Button
         size="icon"
         variant="ghost"
-        class="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-full"
+        class="h-8 w-8 text-[#a151fc] border border-[#a151fc]/20 hover:border-[#a151fc]/50 hover:bg-[#a151fc]/5 rounded-full shadow-sm transition-all"
         onclick={saveEdit}
         disabled={isLoading}
       >
@@ -99,7 +99,7 @@
       <Button
         size="icon"
         variant="ghost"
-        class="h-8 w-8 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full"
+        class="h-8 w-8 text-[#a151fc]/70 border border-[#a151fc]/20 hover:text-[#a151fc] hover:border-[#a151fc]/50 hover:bg-[#a151fc]/5 rounded-full shadow-sm transition-all"
         onclick={cancelEdit}
         disabled={isLoading}
       >

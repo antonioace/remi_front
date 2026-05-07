@@ -3,6 +3,7 @@
   import { Calendar, FileText, Info } from "@lucide/svelte";
   import dayjs from "dayjs";
   import EditableText from "$lib/components/EditableText.svelte";
+  import EditableDate from "$lib/components/EditableDate.svelte";
   import { notebookService } from "../services/notebook.service";
   import { toast } from "svelte-sonner";
 
@@ -71,6 +72,28 @@
     </EditableText>
   </div>
 
+  <!-- Assigned At -->
+  <div class="space-y-2">
+    <div class="flex items-center gap-2 text-muted-foreground">
+      <Calendar class="h-4 w-4" />
+      <span class="text-sm font-medium uppercase tracking-wider"
+        >Fecha de Asignación</span
+      >
+    </div>
+    <EditableDate
+      bind:value={notebook.assignedAt}
+      onSave={(val) => handleUpdateField("assignedAt", val)}
+    >
+      <div class="text-sm text-slate-800 py-1">
+        {#if notebook.assignedAt}
+          {dayjs(notebook.assignedAt).format("DD/MM/YYYY HH:mm")}
+        {:else}
+          <span class="text-slate-400 italic">Sin fecha asignada</span>
+        {/if}
+      </div>
+    </EditableDate>
+  </div>
+
   <!-- Tabs Navigation -->
   <div class="pt-6">
     <div class="flex border-b gap-8">
@@ -120,14 +143,7 @@
   >
     <div class="flex items-center gap-1.5">
       <Calendar class="h-3.5 w-3.5" />
-      <span>Creado: {dayjs(notebook.createdAt).format("DD/MM/YYYY HH:mm")}</span
-      >
+      <span>Creado: {dayjs(notebook.createdAt).format("DD/MM/YYYY HH:mm")}</span>
     </div>
-    {#if notebook.assignedAt}
-      <div class="flex items-center gap-1.5">
-        <Calendar class="h-3.5 w-3.5" />
-        <span>Asignado: {dayjs(notebook.assignedAt).format("DD/MM/YYYY")}</span>
-      </div>
-    {/if}
   </div>
 </div>

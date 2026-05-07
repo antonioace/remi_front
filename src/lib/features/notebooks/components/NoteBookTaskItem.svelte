@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { Trash2 } from "@lucide/svelte";
+  import { Trash2, Copy } from "@lucide/svelte";
   import EditableText from "$lib/components/EditableText.svelte";
+  import TruncateText from "$lib/components/TruncateText.svelte";
   import type { NoteTask } from "../types";
+  import { toast } from "svelte-sonner";
 
   let { task, onUpdate, onDelete } = $props<{
     task: NoteTask;
@@ -10,17 +12,41 @@
   }>();
 
   let isEditing = $state(false);
+
+  async function copyContent() {
+    try {
+      await navigator.clipboard.writeText(task.contentText);
+      toast.success("Contenido copiado al portapapeles");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error al copiar el contenido");
+    }
+  }
 </script>
 
 <div
   class="p-4 rounded-xl bg-slate-50/50 border border-slate-100 group relative"
 >
   <div
-    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all"
+    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all flex gap-1 z-10"
   >
     <button
-      onclick={onDelete}
+      onclick={(e) => {
+        e.stopPropagation();
+        copyContent();
+      }}
+      class="p-2 bg-white hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-full shadow-sm border border-slate-100"
+      title="Copiar contenido"
+    >
+      <Copy class="h-4 w-4" />
+    </button>
+    <button
+      onclick={(e) => {
+        e.stopPropagation();
+        onDelete();
+      }}
       class="p-2 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full shadow-sm border border-slate-100"
+      title="Eliminar tarea"
     >
       <Trash2 class="h-4 w-4" />
     </button>
@@ -32,8 +58,11 @@
     isTextarea={true}
     onSave={onUpdate}
   >
-    <p class="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed pr-10">
-      {task.contentText}
-    </p>
+    <TruncateText
+      text={task.contentText}
+      lines={5}
+      side="right"
+      class="text-sm text-slate-600 whitespace-pre-wrap leading-relaxed pr-16"
+    />
   </EditableText>
 </div>

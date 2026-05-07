@@ -2,7 +2,7 @@
   import type { Notebook } from "../types";
   import { Input } from "$lib/components/ui/input";
   import { Button } from "$lib/components/ui/button";
-  import { ListTodo } from "@lucide/svelte";
+  import { ListTodo, Plus } from "@lucide/svelte";
   import { notebookService } from "../services/notebook.service";
   import { toast } from "svelte-sonner";
 
@@ -75,9 +75,9 @@
   />
   <Button
     onclick={addTask}
-    class="bg-[#a151fc] hover:bg-[#8e44e3] text-white shrink-0"
+    class="bg-[#a151fc] rounded-full hover:bg-[#8e44e3] text-white shrink-0"
   >
-    Agregar
+    <Plus class="h-4 w-4" />
   </Button>
 </div>
 
