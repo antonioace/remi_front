@@ -97,9 +97,7 @@
 
 <div class="space-y-6">
   <div class="flex items-center justify-between">
-    <h2 class="text-2xl font-semibold tracking-tight text-[#5c5b63]">
-      Tus Notebooks
-    </h2>
+    <h2 class="text-2xl font-bold tracking-tight text-[#121212]">Notebooks</h2>
     <div class="flex items-center gap-2">
       <Button
         onclick={() => (isAudioCreateOpen = true)}
@@ -130,7 +128,7 @@
       <Button variant="link" onclick={openCreate}>Crea tu primero</Button>
     </div>
   {:else}
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-4 lg:grid-cols-3">
       {#each notebooks as notebook (notebook.id)}
         <NoteBookCard {notebook} onEdit={openEdit} onDelete={handleDelete} />
       {/each}

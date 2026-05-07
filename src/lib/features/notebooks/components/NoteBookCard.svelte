@@ -1,21 +1,22 @@
 <script lang="ts">
   import type { Notebook } from "../types";
   import { Button } from "$lib/components/ui/button";
-  import * as Avatar from "$lib/components/ui/avatar";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import {
     Calendar,
     Trash2,
     Edit,
     Eye,
-    Flag,
     MoreHorizontal,
     Mic,
+    StickyNote,
+    Image,
   } from "@lucide/svelte";
   import AudioManager from "../../audio/components/AudioManager.svelte";
   import { goto } from "$app/navigation";
   import dayjs from "dayjs";
   import "dayjs/locale/es";
+  import TruncateText from "$lib/components/TruncateText.svelte";
 
   let { notebook, onEdit, onDelete } = $props<{
     notebook: Notebook;
@@ -23,25 +24,15 @@
     onDelete: (id: string) => void;
   }>();
 
-  const hasTasks = $derived(
-    notebook.content?.tasks && notebook.content.tasks.length > 0,
-  );
   let showAudio = $state(false);
 </script>
 
 <!-- Card Container -->
 <div
-  class="group relative flex flex-col rounded-3xl bg-white p-6 transition-all hover:shadow-sm"
+  class="group relative flex flex-col rounded-2xl bg-white p-6 transition-all border border-[#E4E4fE4]"
 >
   <!-- Top Row: Badge, Date & Actions -->
-  <div class="mb-4 flex items-center justify-between">
-    <div
-      class="flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600"
-    >
-      <Flag class="h-3 w-3 fill-orange-600" />
-      <span>Alta</span>
-    </div>
-
+  <div class="absolute top-6 right-6 flex items-center justify-end">
     <div class="flex items-center gap-3">
       <div
         class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
@@ -58,7 +49,11 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
           <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-          <DropdownMenu.Item onclick={() => { goto(`/dashboard/notebooks/${notebook.id}`).catch(() => {}) }}>
+          <DropdownMenu.Item
+            onclick={() => {
+              goto(`/dashboard/notebooks/${notebook.id}`).catch(() => {});
+            }}
+          >
             <Eye class="mr-2 h-4 w-4" />
             <span>Ver Detalles</span>
           </DropdownMenu.Item>
@@ -84,48 +79,48 @@
   </div>
 
   <!-- Middle: Content -->
-  <div class="mb-1">
-    <h3
+  <div class="mb-1 max-w-[calc(100%-140px)]">
+    <TruncateText
+      text={notebook.name}
+      lines={1}
       class="text-lg font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-[#a151fc]"
-    >
-      {notebook.name}
-    </h3>
+    />
   </div>
 
-  <p class="mb-5 mt-2 line-clamp-2 text-sm leading-relaxed text-slate-500">
-    {notebook.description || notebook.textContent}
-  </p>
+  <TruncateText
+    text={notebook.description || notebook.textContent}
+    lines={3}
+    class="mb-5 mt-2 text-sm leading-relaxed text-slate-500"
+  />
 
   <!-- Tags -->
-  <div class="mb-6 flex flex-wrap gap-2">
-    {#if hasTasks}
-      <span
-        class="inline-flex items-center rounded-lg border border-slate-100 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100"
-      >
-        # Tareas: {notebook.content?.tasks?.length}
-      </span>
-    {/if}
-    <span
-      class="inline-flex items-center rounded-lg border border-slate-100 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100"
-    >
-      # Notebook
-    </span>
-  </div>
-
-  <!-- Divider -->
-  <div class="border-t border-dashed border-slate-200"></div>
+  {#if notebook.content?.tags && notebook.content.tags.length > 0}
+    <div class="mb-6 flex flex-wrap gap-2">
+      {#each notebook.content.tags as tag (tag)}
+        <span
+          class="inline-flex items-center rounded-lg border border-[#a151fc]/10 bg-[#a151fc]/5 px-2.5 py-1 text-xs font-semibold text-[#a151fc] transition-colors hover:bg-[#a151fc]/10"
+        >
+          {tag}
+        </span>
+      {/each}
+    </div>
+  {/if}
 
   <!-- Footer -->
-  <div class="mt-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <Avatar.Root class="h-8 w-8 border-2 border-white shadow-sm">
-        <Avatar.Image
-          src="https://api.dicebear.com/7.x/notionists/svg?seed={notebook.id}"
-          alt="Avatar"
-        />
-        <Avatar.Fallback>US</Avatar.Fallback>
-      </Avatar.Root>
-      <span class="text-sm font-bold text-slate-700">Usuario</span>
+  <div class="mt-4 flex items-center justify-between absolute bottom-6 right-6">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-1.5 text-slate-500" title="Anotaciones">
+        <StickyNote class="h-4 w-4 text-[#a151fc]" />
+        <span class="text-xs font-bold"
+          >{notebook.content?.tasks?.length || 0}</span
+        >
+      </div>
+      <div class="flex items-center gap-1.5 text-slate-500" title="Imágenes">
+        <Image class="h-4 w-4 text-[#a151fc]" />
+        <span class="text-xs font-bold"
+          >{notebook.content?.images?.length || 0}</span
+        >
+      </div>
     </div>
   </div>
 </div>
