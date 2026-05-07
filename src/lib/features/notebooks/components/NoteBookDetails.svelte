@@ -104,7 +104,7 @@
           : 'border-transparent text-slate-500 hover:text-slate-700'}"
         onclick={() => (activeTab = "tasks")}
       >
-        Notas Adicionales
+        Notas
       </button>
       <button
         class="pb-3 text-sm font-semibold transition-colors border-b-2 {activeTab ===
@@ -143,7 +143,8 @@
   >
     <div class="flex items-center gap-1.5">
       <Calendar class="h-3.5 w-3.5" />
-      <span>Creado: {dayjs(notebook.createdAt).format("DD/MM/YYYY HH:mm")}</span>
+      <span>Creado: {dayjs(notebook.createdAt).format("DD/MM/YYYY HH:mm")}</span
+      >
     </div>
   </div>
 </div>

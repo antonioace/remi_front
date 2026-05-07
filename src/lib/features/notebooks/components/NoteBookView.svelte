@@ -11,7 +11,7 @@
   import CreateNotebookFromAudio from "./CreateNotebookFromAudio.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Sheet from "$lib/components/ui/sheet";
-  import { Plus, Loader2, Mic } from "@lucide/svelte";
+  import { Plus, Loader2, Mic, Inbox } from "@lucide/svelte";
   import { toast } from "svelte-sonner";
 
   import type { PaginationResult } from "$lib/features/shared/types";
@@ -122,10 +122,27 @@
     </div>
   {:else if notebooks.length === 0}
     <div
-      class="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed text-center"
+      class="flex flex-col items-center justify-center py-20 px-4 text-center bg-white rounded-3xl border border-slate-100"
     >
-      <p class="text-muted-foreground">No tienes notebooks aún.</p>
-      <Button variant="link" onclick={openCreate}>Crea tu primero</Button>
+      <div
+        class="h-20 w-20 rounded-full bg-[#a151fc]/5 flex items-center justify-center mb-6"
+      >
+        <Inbox class="h-10 w-10 text-[#a151fc] opacity-40" />
+      </div>
+      <h3 class="text-xl font-bold text-slate-900 mb-2">
+        No hay notebooks todavía
+      </h3>
+      <p class="text-slate-500 max-w-xs mb-8 leading-relaxed">
+        Comienza creando tu primer notebook para organizar tus ideas, tareas e
+        imágenes en un solo lugar.
+      </p>
+      <Button
+        onclick={openCreate}
+        class="bg-[#a151fc] hover:bg-[#8e44e3] text-white px-8 h-12 rounded-xl flex items-center gap-2  transition-all hover:scale-[1.02]"
+      >
+        <Plus class="h-5 w-5" />
+        Crear mi primer Notebook
+      </Button>
     </div>
   {:else}
     <div class="grid gap-4 lg:grid-cols-3">
