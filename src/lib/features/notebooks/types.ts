@@ -44,3 +44,61 @@ export interface UpdateNotebookDto extends Partial<
 > {
   id?: string;
 }
+
+export interface NotebookSchedule {
+  id: string;
+  notebookId: string;
+  name: string;
+  description?: string;
+  type: "normal" | "recurrent";
+  status: "pending" | "executed";
+  isEnabled: boolean;
+  date: string;
+  startDate: string;
+  endDate: string;
+  interval: {
+    days: number;
+    hours: number;
+    minutes: number;
+  };
+  channels: string[];
+  createdAt: string;
+  lastExecutionAt?: Date;
+}
+
+export type CreateNotebookScheduleDto = Omit<
+  NotebookSchedule,
+  "id" | "createdAt" | "notebookId" | "status" | "isEnabled"
+>;
+export type UpdateNotebookScheduleDto = Partial<
+  Omit<NotebookSchedule, "id" | "createdAt" | "notebookId">
+>;
+
+export enum NotebookEventStatus {
+  PENDING = "pending",
+  EXECUTED = "executed",
+  FAILED = "failed",
+  CANCELED = "canceled",
+}
+
+export enum NotebookEventType {
+  CREATED = "created",
+  UPDATED = "updated",
+  SCHEDULED = "scheduled",
+}
+
+export interface NotebookEvent {
+  id: string;
+  notebookId: string;
+  scheduleId?: string;
+  assignedAt?: string;
+  type: NotebookEventType;
+  status: NotebookEventStatus;
+  userId: string;
+  channels: string[];
+  isRecurrent: boolean;
+  interval?: { days: number; hours: number; minutes: number };
+  payload?: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}

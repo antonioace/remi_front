@@ -10,17 +10,24 @@
   import NoteBookTasksTab from "./NoteBookTasksTab.svelte";
   import NoteBookAudiosTab from "./NoteBookAudiosTab.svelte";
   import NoteBookImagesTab from "./NoteBookImagesTab.svelte";
+  import NoteBookScheduleTab from "./NoteBookScheduleTab.svelte";
+  import { Mic, Image as ImageIcon, Bell } from "@lucide/svelte";
 
   interface Props {
     notebook: Notebook;
   }
   let { notebook = $bindable() }: Props = $props();
 
-  let activeTab = $state<"tasks" | "audios" | "images">("tasks");
+  let activeTab = $state<"tasks" | "audios" | "images" | "alarms">("tasks");
 
   async function handleUpdateField(field: string, value: unknown) {
+    let finalValue = value;
+    if (field === "assignedAt" && value) {
+      finalValue = dayjs(value as string | Date).toISOString();
+    }
+
     const result = await notebookService.updateNotebook(notebook.id, {
-      [field]: value,
+      [field]: finalValue,
     });
     if (result.success) {
       toast.success("Actualizado correctamente");
@@ -98,31 +105,44 @@
   <div class="pt-6">
     <div class="flex border-b gap-8">
       <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 {activeTab ===
+        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
         'tasks'
           ? 'border-[#a151fc] text-[#a151fc]'
           : 'border-transparent text-slate-500 hover:text-slate-700'}"
         onclick={() => (activeTab = "tasks")}
       >
+        <FileText class="h-4 w-4" />
         Notas
       </button>
       <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 {activeTab ===
+        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
         'audios'
           ? 'border-[#a151fc] text-[#a151fc]'
           : 'border-transparent text-slate-500 hover:text-slate-700'}"
         onclick={() => (activeTab = "audios")}
       >
+        <Mic class="h-4 w-4" />
         Audios
       </button>
       <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 {activeTab ===
+        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
         'images'
           ? 'border-[#a151fc] text-[#a151fc]'
           : 'border-transparent text-slate-500 hover:text-slate-700'}"
         onclick={() => (activeTab = "images")}
       >
+        <ImageIcon class="h-4 w-4" />
         Imágenes
+      </button>
+      <button
+        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
+        'alarms'
+          ? 'border-[#a151fc] text-[#a151fc]'
+          : 'border-transparent text-slate-500 hover:text-slate-700'}"
+        onclick={() => (activeTab = "alarms")}
+      >
+        <Bell class="h-4 w-4" />
+        Alarmas
       </button>
     </div>
 
@@ -134,6 +154,8 @@
         <NoteBookAudiosTab notebookId={notebook.id} />
       {:else if activeTab === "images"}
         <NoteBookImagesTab bind:notebook />
+      {:else if activeTab === "alarms"}
+        <NoteBookScheduleTab notebookId={notebook.id} />
       {/if}
     </div>
   </div>
