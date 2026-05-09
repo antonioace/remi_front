@@ -88,10 +88,10 @@
 </script>
 
 <div class="mb-6 flex items-center justify-end w-full">
-  <div class="relative">
+  <div class="relative w-full sm:w-auto">
     <Button
       variant="outline"
-      class="gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5"
+      class="w-full sm:w-auto gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5 justify-center"
       disabled={isUploadingImage}
     >
       {#if isUploadingImage}

@@ -45,7 +45,7 @@
 <div class="mb-6 flex items-center justify-between">
   <Button
     variant="outline"
-    class=" ml-auto gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5"
+    class="w-full sm:w-auto sm:ml-auto gap-2 text-[#a151fc] border-[#a151fc] hover:bg-[#a151fc]/5 justify-center"
     onclick={() => (isAudioOpen = true)}
   >
     <Mic class="h-4 w-4" />

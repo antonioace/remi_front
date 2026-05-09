@@ -98,7 +98,7 @@
 
     <div class="flex-1 overflow-y-auto px-6 space-y-5 py-4">
       <div class="space-y-2">
-        <Label for="name">Nombre</Label>
+        <Label for="name">Nombre <span class="text-red-500 ml-0.5">*</span></Label>
         <Input
           id="name"
           bind:value={form.name}
@@ -143,13 +143,13 @@
 
       {#if form.type === "normal"}
         <div class="space-y-2">
-          <Label for="date">Fecha y Hora</Label>
+          <Label for="date">Fecha y Hora <span class="text-red-500 ml-0.5">*</span></Label>
           <Input id="date" type="datetime-local" bind:value={form.date} />
         </div>
       {:else}
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="space-y-2">
-            <Label for="startDate">Fecha Inicial</Label>
+            <Label for="startDate">Fecha Inicial <span class="text-red-500 ml-0.5">*</span></Label>
             <Input
               id="startDate"
               type="datetime-local"
@@ -157,7 +157,7 @@
             />
           </div>
           <div class="space-y-2">
-            <Label for="endDate">Fecha Final (Opcional)</Label>
+            <Label for="endDate">Fecha Final</Label>
             <Input
               id="endDate"
               type="datetime-local"
@@ -167,7 +167,7 @@
         </div>
 
         <div class="space-y-2">
-          <Label>Intervalo de Repetición</Label>
+          <Label>Intervalo de Repetición <span class="text-red-500 ml-0.5">*</span></Label>
           <div class="grid grid-cols-3 gap-2">
             <div class="space-y-1">
               <span class="text-[10px] uppercase font-bold text-slate-400"

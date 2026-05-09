@@ -205,7 +205,7 @@
 </script>
 
 <div class="space-y-6">
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
     <div class="space-y-1">
       <h3 class="text-lg font-bold text-slate-900">Alarmas</h3>
       <p class="text-sm text-slate-500">
@@ -214,7 +214,7 @@
     </div>
     <Button
       variant="outline"
-      class="bg-white border-[#a151fc] text-[#a151fc] hover:bg-[#a151fc]/10 flex items-center gap-2 rounded-xl"
+      class="bg-white border-[#a151fc] text-[#a151fc] hover:bg-[#a151fc]/10 flex items-center gap-2 w-full sm:w-auto justify-center"
       onclick={() => (isCreateOpen = true)}
     >
       <Plus class="h-4 w-4" />

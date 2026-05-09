@@ -26,61 +26,62 @@
 </script>
 
 <div
-  class="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all group"
+  class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all group gap-4"
 >
-  <div class="flex items-center gap-4">
+  <!-- Top Section: Icon & Info -->
+  <div class="flex items-start gap-4">
     <div
-      class="h-10 w-10 rounded-lg {schedule.isEnabled
+      class="h-10 w-10 rounded-lg shrink-0 {schedule.isEnabled
         ? 'bg-[#a151fc]/10 text-[#a151fc]'
-        : 'bg-slate-100 text-slate-400'} flex items-center justify-center transition-colors"
+        : 'bg-slate-100 text-slate-400'} flex items-center justify-center transition-colors mt-1"
     >
       <Bell class="h-5 w-5" />
     </div>
-    <div>
+    <div class="flex-1 min-w-0">
       <p
-        class="font-bold {schedule.isEnabled
+        class="font-bold line-clamp-2 {schedule.isEnabled
           ? 'text-slate-900'
           : 'text-slate-400'} transition-colors"
       >
         {schedule.name}
       </p>
-      <div class="flex items-center gap-3 mt-1">
+      
+      <div class="flex flex-wrap items-center gap-2 mt-1.5">
         <div
-          class="flex items-center gap-1 text-[11px] text-slate-400 font-medium uppercase"
+          class="flex items-center gap-1 text-[11px] text-slate-400 font-medium uppercase bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100"
         >
           <Clock class="h-3 w-3" />
           <span>
             {#if schedule.type === "normal"}
               {dayjs(schedule.date).format("DD MMM, HH:mm")}
             {:else}
-              Inicia {dayjs(schedule.startDate).format("DD MMM")}
+              {dayjs(schedule.startDate).format("DD MMM")}
             {/if}
           </span>
         </div>
         <Badge
           variant="outline"
-          title={schedule.type === "normal" ? "Puntual" : "Recurrente"}
-          class="px-1.5 h-5 bg-slate-50 border-slate-100 text-slate-500"
+          class="px-1.5 h-5 bg-white border-slate-100 text-slate-500 text-[10px]"
         >
           {#if schedule.type === "normal"}
-            <Calendar class="h-3 w-3" />
+            <Calendar class="h-3 w-3 mr-1" /> Puntual
           {:else}
-            <Repeat class="h-3 w-3" />
+            <Repeat class="h-3 w-3 mr-1" /> Recurrente
           {/if}
         </Badge>
         <Badge
-          title={schedule.status === "executed" ? "Ejecutado" : "Pendiente"}
-          class="px-1.5 h-5 {schedule.status === 'executed'
-            ? 'bg-green-100 text-green-700 border-green-200'
-            : 'bg-blue-100 text-blue-700 border-blue-200'}"
+          class="px-1.5 h-5 text-[10px] {schedule.status === 'executed'
+            ? 'bg-green-50 text-green-700 border-green-100'
+            : 'bg-blue-50 text-blue-700 border-blue-100'}"
         >
           {#if schedule.status === "executed"}
-            <CheckCircle2 class="h-3 w-3" />
+            <CheckCircle2 class="h-3 w-3 mr-1" /> Ejecutado
           {:else}
-            <Clock class="h-3 w-3" />
+            <Clock class="h-3 w-3 mr-1" /> Pendiente
           {/if}
         </Badge>
       </div>
+
       {#if schedule.lastExecutionAt}
         <div
           class="flex items-center gap-1 mt-1.5 text-[10px] text-green-600 font-medium"
@@ -95,14 +96,49 @@
       {/if}
     </div>
   </div>
-  <div class="flex items-center gap-4">
-    <!-- Switch (Custom CSS) -->
+
+  <!-- Bottom Section (Mobile) / Side Section (Desktop): Actions & Switch -->
+  <div class="flex items-center justify-between sm:justify-end gap-2 sm:gap-6 pt-3 sm:pt-0 border-t sm:border-0 border-slate-50">
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-1 sm:gap-2">
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Ver historial"
+        class="h-9 w-9 sm:h-8 sm:w-8 text-slate-400 hover:text-blue-500 hover:bg-blue-50 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
+        onclick={() => onHistory(schedule)}
+      >
+        <Activity class="h-4.5 w-4.5 sm:h-4 sm:w-4" />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Editar"
+        class="h-9 w-9 sm:h-8 sm:w-8 text-slate-400 hover:text-[#a151fc] hover:bg-[#a151fc]/10 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
+        onclick={() => onEdit(schedule)}
+      >
+        <Pencil class="h-4.5 w-4.5 sm:h-4 sm:w-4" />
+      </Button>
+
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Eliminar"
+        class="h-9 w-9 sm:h-8 sm:w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
+        onclick={() => onDelete(schedule.id)}
+      >
+        <Trash2 class="h-4.5 w-4.5 sm:h-4 sm:w-4" />
+      </Button>
+    </div>
+
+    <!-- Switch (Checkbox) -->
     <button
       type="button"
       role="switch"
       aria-checked={schedule.isEnabled}
-      aria-label="Alternar estado de la programación"
-      class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#a151fc] focus:ring-offset-2 {schedule.isEnabled
+      aria-label="Activar o desactivar alarma"
+      class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#a151fc] focus:ring-offset-2 {schedule.isEnabled
         ? 'bg-[#a151fc]'
         : 'bg-slate-200'} {schedule.status === 'executed'
         ? 'opacity-50 cursor-not-allowed'
@@ -118,35 +154,5 @@
           : 'translate-x-0'}"
       ></span>
     </button>
-
-    <Button
-      variant="ghost"
-      size="icon"
-      aria-label="Ver historial"
-      class="h-8 w-8 text-slate-300 hover:text-blue-500 hover:bg-blue-50 opacity-0 group-hover:opacity-100 transition-all"
-      onclick={() => onHistory(schedule)}
-    >
-      <Activity class="h-4 w-4" />
-    </Button>
-
-    <Button
-      variant="ghost"
-      size="icon"
-      aria-label="Editar programación"
-      class="h-8 w-8 text-slate-300 hover:text-[#a151fc] hover:bg-[#a151fc]/10 opacity-0 group-hover:opacity-100 transition-all"
-      onclick={() => onEdit(schedule)}
-    >
-      <Pencil class="h-4 w-4" />
-    </Button>
-
-    <Button
-      variant="ghost"
-      size="icon"
-      aria-label="Eliminar programación"
-      class="h-8 w-8 text-slate-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all"
-      onclick={() => onDelete(schedule.id)}
-    >
-      <Trash2 class="h-4 w-4" />
-    </Button>
   </div>
 </div>
