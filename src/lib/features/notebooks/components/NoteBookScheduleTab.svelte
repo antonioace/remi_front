@@ -207,7 +207,7 @@
 <div class="space-y-6">
   <div class="flex items-center justify-between">
     <div class="space-y-1">
-      <h3 class="text-lg font-bold text-slate-900">Programación de Alarmas</h3>
+      <h3 class="text-lg font-bold text-slate-900">Alarmas</h3>
       <p class="text-sm text-slate-500">
         Configura avisos y recordatorios automáticos.
       </p>
@@ -231,12 +231,12 @@
     </div>
   {:else if schedules.length === 0}
     <div
-      class="flex flex-col items-center justify-center py-16 px-4 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200"
+      class="flex flex-col items-center justify-center py-16 px-4 rounded-2xl"
     >
       <div
-        class="h-16 w-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm"
+        class="h-16 w-16 rounded-full flex items-center justify-center mb-4 bg-slate-50"
       >
-        <BellRing class="h-8 w-8 text-slate-300" />
+        <BellRing class="h-8 w-8 text-slate-400" />
       </div>
       <p class="text-slate-500 font-medium">No hay eventos programados</p>
       <p class="text-xs text-slate-400 mt-1 text-center max-w-[250px]">
@@ -245,7 +245,7 @@
       </p>
     </div>
   {:else}
-    <div class="grid gap-3">
+    <div class="flex flex-col gap-3">
       {#each schedules as schedule (schedule.id)}
         <ScheduleCard
           {schedule}

@@ -80,11 +80,12 @@
 
   <!-- Middle: Content -->
   <div class="mb-1 max-w-[calc(100%-140px)]">
-    <TruncateText
-      text={notebook.name}
-      lines={1}
-      class="text-lg font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-[#a151fc]"
-    />
+    <a
+      href="/dashboard/notebooks/{notebook.id}"
+      class="text-lg font-bold leading-tight tracking-tight text-slate-900 transition-colors hover:text-[#a151fc] block"
+    >
+      <TruncateText text={notebook.name} lines={1} />
+    </a>
   </div>
 
   <TruncateText
@@ -107,7 +108,7 @@
   {/if}
 
   <!-- Footer -->
-  <div class="mt-4 flex items-center justify-between absolute bottom-6 right-6">
+  <div class="mt-auto flex items-center justify-between pt-4">
     <div class="flex items-center gap-5">
       <div class="flex items-center gap-1.5 text-slate-500" title="Anotaciones">
         <StickyNote class="h-4 w-4 text-[#a151fc]" />

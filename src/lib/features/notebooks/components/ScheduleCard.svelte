@@ -108,7 +108,8 @@
         ? 'opacity-50 cursor-not-allowed'
         : ''}"
       onclick={() =>
-        schedule.status !== "executed" && onToggle(schedule.id, schedule.isEnabled)}
+        schedule.status !== "executed" &&
+        onToggle(schedule.id, schedule.isEnabled)}
       disabled={schedule.status === "executed"}
     >
       <span

@@ -101,49 +101,92 @@
     </EditableDate>
   </div>
 
-  <!-- Tabs Navigation -->
+  <!-- Tabs Section Wrapper -->
   <div class="pt-6">
-    <div class="flex border-b gap-8">
-      <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
-        'tasks'
-          ? 'border-[#a151fc] text-[#a151fc]'
-          : 'border-transparent text-slate-500 hover:text-slate-700'}"
-        onclick={() => (activeTab = "tasks")}
-      >
-        <FileText class="h-4 w-4" />
-        Notas
-      </button>
-      <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
-        'audios'
-          ? 'border-[#a151fc] text-[#a151fc]'
-          : 'border-transparent text-slate-500 hover:text-slate-700'}"
-        onclick={() => (activeTab = "audios")}
-      >
-        <Mic class="h-4 w-4" />
-        Audios
-      </button>
-      <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
-        'images'
-          ? 'border-[#a151fc] text-[#a151fc]'
-          : 'border-transparent text-slate-500 hover:text-slate-700'}"
-        onclick={() => (activeTab = "images")}
-      >
-        <ImageIcon class="h-4 w-4" />
-        Imágenes
-      </button>
-      <button
-        class="pb-3 text-sm font-semibold transition-colors border-b-2 flex items-center gap-2 {activeTab ===
-        'alarms'
-          ? 'border-[#a151fc] text-[#a151fc]'
-          : 'border-transparent text-slate-500 hover:text-slate-700'}"
-        onclick={() => (activeTab = "alarms")}
-      >
-        <Bell class="h-4 w-4" />
-        Alarmas
-      </button>
+    <!-- Tabs Navigation -->
+    <!-- Tabs Navigation Container -->
+    <div class="bg-slate-50/50 p-1.5 md:p-2 rounded-[22px] border border-slate-200 mt-4">
+      <div class="grid grid-cols-4 gap-1.5 md:gap-2 w-full">
+        <!-- Notas Tab -->
+        <button
+          class="flex items-center justify-center p-3 rounded-[18px] border transition-all duration-300 {activeTab ===
+          'tasks'
+            ? 'bg-[#a151fc] border-[#a151fc] text-white'
+            : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-white hover:border-slate-100'}"
+          onclick={() => (activeTab = "tasks")}
+        >
+          <div class="flex flex-col md:flex-row items-center gap-1 md:gap-3">
+            <div
+              class="p-1.5 md:p-2 rounded-xl {activeTab === 'tasks'
+                ? 'bg-white/20'
+                : 'bg-slate-100'}"
+            >
+              <FileText class="h-4 w-4" />
+            </div>
+            <span class="font-bold text-[10px] md:text-sm">Notas</span>
+          </div>
+        </button>
+
+        <!-- Audios Tab -->
+        <button
+          class="flex items-center justify-center p-3 rounded-[18px] border transition-all duration-300 {activeTab ===
+          'audios'
+            ? 'bg-[#a151fc] border-[#a151fc] text-white'
+            : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-white hover:border-slate-100'}"
+          onclick={() => (activeTab = "audios")}
+        >
+          <div class="flex flex-col md:flex-row items-center gap-1 md:gap-3">
+            <div
+              class="p-1.5 md:p-2 rounded-xl {activeTab === 'audios'
+                ? 'bg-white/20'
+                : 'bg-slate-100'}"
+            >
+              <Mic class="h-4 w-4" />
+            </div>
+            <span class="font-bold text-[10px] md:text-sm">Audios</span>
+          </div>
+        </button>
+
+        <!-- Imágenes Tab -->
+        <button
+          class="flex items-center justify-center p-3 rounded-[18px] border transition-all duration-300 {activeTab ===
+          'images'
+            ? 'bg-[#a151fc] border-[#a151fc] text-white'
+            : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-white hover:border-slate-100'}"
+          onclick={() => (activeTab = "images")}
+        >
+          <div class="flex flex-col md:flex-row items-center gap-1 md:gap-3">
+            <div
+              class="p-1.5 md:p-2 rounded-xl {activeTab === 'images'
+                ? 'bg-white/20'
+                : 'bg-slate-100'}"
+            >
+              <ImageIcon class="h-4 w-4" />
+            </div>
+            <span class="font-bold text-[10px] md:text-sm">Imágenes</span>
+          </div>
+        </button>
+
+        <!-- Alarmas Tab -->
+        <button
+          class="flex items-center justify-center p-3 rounded-[18px] border transition-all duration-300 {activeTab ===
+          'alarms'
+            ? 'bg-[#a151fc] border-[#a151fc] text-white'
+            : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-white hover:border-slate-100'}"
+          onclick={() => (activeTab = "alarms")}
+        >
+          <div class="flex flex-col md:flex-row items-center gap-1 md:gap-3">
+            <div
+              class="p-1.5 md:p-2 rounded-xl {activeTab === 'alarms'
+                ? 'bg-white/20'
+                : 'bg-slate-100'}"
+            >
+              <Bell class="h-4 w-4" />
+            </div>
+            <span class="font-bold text-[10px] md:text-sm">Alarmas</span>
+          </div>
+        </button>
+      </div>
     </div>
 
     <!-- Tabs Content -->

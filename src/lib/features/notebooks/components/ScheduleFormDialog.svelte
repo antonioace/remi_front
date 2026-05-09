@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Smartphone, Mail, Loader2 } from "@lucide/svelte";
+  import { Smartphone, Mail, Loader2, ArrowLeft } from "@lucide/svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Input } from "$lib/components/ui/input";
@@ -8,6 +8,7 @@
     CreateNotebookScheduleDto,
     UpdateNotebookScheduleDto,
   } from "../types";
+  import { useWindowSize } from "$lib/features/shared/hooks/useWindowSize";
 
   interface Props {
     open: boolean;
@@ -29,6 +30,9 @@
     onClose,
   }: Props = $props();
 
+  const width = useWindowSize();
+  let isMobile = $derived($width < 640);
+
   const channelsList = [
     { id: "push", label: "Notificación Push", icon: Smartphone },
     { id: "email", label: "Correo Electrónico", icon: Mail },
@@ -42,22 +46,57 @@
       form.channels = [...form.channels, id];
     }
   }
+
+  function handleSave() {
+    // Format dates to ISO before sending to backend
+    if (form.date) form.date = new Date(form.date).toISOString();
+    if (form.startDate)
+      form.startDate = new Date(form.startDate).toISOString();
+    if (form.endDate) form.endDate = new Date(form.endDate).toISOString();
+
+    onSave();
+  }
 </script>
 
 <Dialog.Root bind:open>
-  <Dialog.Content class="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
-    <Dialog.Header>
-      <Dialog.Title
-        >{mode === "create" ? "Crear Nueva" : "Editar"} Programación</Dialog.Title
+  <Dialog.Content
+    class={isMobile
+      ? "flex h-[100dvh] w-screen max-w-none flex-col gap-0 rounded-none border-0 p-0 overflow-hidden"
+      : "sm:max-w-[500px] max-h-[90vh] overflow-y-auto"}
+    showCloseButton={!isMobile}
+  >
+    {#if isMobile}
+      <div
+        class="flex items-center gap-2 border-b border-slate-100 bg-white p-4"
       >
-      <Dialog.Description>
-        {mode === "create"
-          ? "Configura los detalles de tu evento programado."
-          : "Modifica los detalles de tu evento programado."}
-      </Dialog.Description>
-    </Dialog.Header>
+        <Button
+          variant="ghost"
+          size="icon"
+          class="-ml-2 h-9 w-9 text-slate-500"
+          onclick={onClose}
+        >
+          <ArrowLeft class="h-5 w-5" />
+        </Button>
+        <div>
+          <h2 class="text-base font-semibold text-slate-900">
+            {mode === "create" ? "Crear Nueva" : "Editar"} Programación
+          </h2>
+        </div>
+      </div>
+    {:else}
+      <Dialog.Header class="p-6 pb-0">
+        <Dialog.Title
+          >{mode === "create" ? "Crear Nueva" : "Editar"} Programación</Dialog.Title
+        >
+        <Dialog.Description>
+          {mode === "create"
+            ? "Configura los detalles de tu evento programado."
+            : "Modifica los detalles de tu evento programado."}
+        </Dialog.Description>
+      </Dialog.Header>
+    {/if}
 
-    <div class="space-y-5 py-4">
+    <div class="flex-1 overflow-y-auto px-6 space-y-5 py-4">
       <div class="space-y-2">
         <Label for="name">Nombre</Label>
         <Input
@@ -188,11 +227,11 @@
       </div>
     </div>
 
-    <Dialog.Footer>
+    <Dialog.Footer class={isMobile ? "p-4 border-t" : "px-6 pb-6"}>
       <Button variant="outline" onclick={onClose}>Cancelar</Button>
       <Button
         class="bg-[#a151fc] hover:bg-[#8e44e3] text-white flex items-center gap-2"
-        onclick={onSave}
+        onclick={handleSave}
         disabled={isSubmitting}
       >
         {#if isSubmitting}

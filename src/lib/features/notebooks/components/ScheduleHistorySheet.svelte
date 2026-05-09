@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { Activity, Loader2 } from "@lucide/svelte";
+  import { Activity, Loader2, ArrowLeft } from "@lucide/svelte";
   import * as Sheet from "$lib/components/ui/sheet";
   import { Badge } from "$lib/components/ui/badge";
+  import { Button } from "$lib/components/ui/button";
+  import { useWindowSize } from "$lib/features/shared/hooks/useWindowSize";
   import dayjs from "dayjs";
   import { NotebookEventStatus, type NotebookEvent } from "../types";
 
@@ -12,6 +14,9 @@
   }
 
   let { open = $bindable(), events, isLoading }: Props = $props();
+
+  const width = useWindowSize();
+  let isMobile = $derived($width < 640);
 
   const statusMap = {
     [NotebookEventStatus.PENDING]: {
@@ -40,8 +45,32 @@
 </script>
 
 <Sheet.Root bind:open>
-  <Sheet.Content class="sm:max-w-[450px]">
-    <Sheet.Header class="space-y-4 border-b border-slate-100 pb-6">
+  <Sheet.Content
+    side={isMobile ? "right" : "right"}
+    class={isMobile
+      ? "flex h-[100dvh] w-screen max-w-none flex-col gap-0 rounded-none border-0 p-0 overflow-hidden"
+      : "sm:max-w-[450px]"}
+  >
+    {#if isMobile}
+      <div
+        class="flex items-center gap-2 border-b border-slate-100 bg-white p-4"
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          class="-ml-2 h-9 w-9 text-slate-500"
+          onclick={() => (open = false)}
+        >
+          <ArrowLeft class="h-5 w-5" />
+        </Button>
+        <div>
+          <h2 class="text-base font-semibold text-slate-900">
+            Historial de Ejecuciones
+          </h2>
+        </div>
+      </div>
+    {:else}
+      <Sheet.Header class="space-y-4 border-b border-slate-100 p-6">
       <div class="flex items-center gap-3">
         <div
           class="h-10 w-10 rounded-xl bg-[#a151fc]/10 text-[#a151fc] flex items-center justify-center"
@@ -58,10 +87,11 @@
             Eventos registrados
           </Sheet.Description>
         </div>
-      </div>
-    </Sheet.Header>
+        </div>
+      </Sheet.Header>
+    {/if}
 
-    <div class="mt-8 h-full pb-20 overflow-y-auto">
+    <div class="flex-1 px-6 mt-4 h-full pb-20 overflow-y-auto">
       {#if isLoading}
         <div class="flex flex-col items-center justify-center py-20">
           <Loader2 class="h-8 w-8 animate-spin text-blue-500 opacity-40" />

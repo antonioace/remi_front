@@ -48,11 +48,11 @@
   }
 </script>
 
-<div class="min-h-screen flex flex-col bg-white">
+<div class="flex-1 flex flex-col overflow-hidden h-full">
   <Header title="Remido" backUrl="/dashboard/home" />
 
-  <main class="flex-1 p-6 lg:p-10 space-y-6 max-w-5xl w-full">
-    <div class="pt-4">
+  <main class="grow p-6 lg:p-10 space-y-6 w-full overflow-y-auto flex flex-col">
+    <div class="pt-4 flex flex-col grow">
       {#if isLoading}
         <div class="flex h-64 items-center justify-center">
           <Loader2 class="h-8 w-8 animate-spin text-[#a151fc]" />

@@ -20,6 +20,8 @@ export interface Notebook {
     tasks?: NoteTask[];
     tags?: string[];
     images?: NoteImage[];
+    audios?: unknown[];
+    alarms?: unknown[];
     [key: string]: unknown;
   };
   userId: string;
